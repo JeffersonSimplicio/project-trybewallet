@@ -41,7 +41,6 @@ class Login extends React.Component {
   }
 
   submitUserData() {
-    console.log('Entrou no enviar');
     const { dispatch, history } = this.props;
     const { email } = this.state;
     dispatch(addUser(email));
