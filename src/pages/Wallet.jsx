@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchCurrencies } from '../actions';
 import ExpenseForm from '../components/ExpenseForm';
+import sumExpenses from '../services/sumExpenses';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -11,7 +12,9 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { emailUser } = this.props;
+    const { emailUser, expenseList } = this.props;
+    const totalExpensesReal = sumExpenses(expenseList);
+
     return (
       <>
         <header>
@@ -22,12 +25,9 @@ class Wallet extends React.Component {
             {`Email: ${emailUser}`}
           </h2>
 
-          <span data-testid="total-field">
-            {`Despesas: R$${0}`}
-            <span data-testid="header-currency-field">
-              BRL
-            </span>
-          </span>
+          <span>Despesas: R$</span>
+          <span data-testid="total-field">{totalExpensesReal.toFixed(2)}</span>
+          <span data-testid="header-currency-field">BRL</span>
         </header>
         <ExpenseForm />
       </>
@@ -37,11 +37,13 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => ({
   emailUser: state.user.email,
+  expenseList: state.wallet.expenses,
 });
 
 Wallet.propTypes = {
   emailUser: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
+  expenseList: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(Wallet);
