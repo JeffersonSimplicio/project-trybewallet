@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { fetchCurrencies } from '../actions';
 import ExpenseForm from '../components/ExpenseForm';
 import sumExpenses from '../services/sumExpenses';
+import TableExpenses from '../components/TableExpenses';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -19,6 +20,7 @@ class Wallet extends React.Component {
       <>
         <header>
           <h1>TrybeWallet</h1>
+
           <h2
             data-testid="email-field"
           >
@@ -30,6 +32,9 @@ class Wallet extends React.Component {
           <span data-testid="header-currency-field">BRL</span>
         </header>
         <ExpenseForm />
+        <main>
+          <TableExpenses />
+        </main>
       </>
     );
   }
