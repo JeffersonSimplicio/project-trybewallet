@@ -1,7 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import TableExpensesAuxiliary from './TableExpensesAuxiliary';
+// import getExtraData from '../services/getExtraData';
 
 class TableExpenses extends React.Component {
   render() {
+    const { expenseList } = this.props;
+    // console.log(expenseList);
     return (
       <table>
         <thead>
@@ -17,9 +23,26 @@ class TableExpenses extends React.Component {
             <th>Editar/Excluir</th>
           </tr>
         </thead>
+        <tbody>
+          {expenseList.map((expense) => (
+            <TableExpensesAuxiliary
+              key={ expense.id }
+              expenseData={ expense }
+            />
+          ))}
+        </tbody>
       </table>
     );
   }
 }
 
-export default TableExpenses;
+const mapStateToProps = (state) => ({
+  emailUser: state.user.email,
+  expenseList: state.wallet.expenses,
+});
+
+TableExpenses.propTypes = {
+  expenseList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+export default connect(mapStateToProps)(TableExpenses);

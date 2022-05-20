@@ -20,13 +20,11 @@ class Wallet extends React.Component {
       <>
         <header>
           <h1>TrybeWallet</h1>
-
           <h2
             data-testid="email-field"
           >
             {`Email: ${emailUser}`}
           </h2>
-
           <span>Despesas: R$</span>
           <span data-testid="total-field">{totalExpensesReal.toFixed(2)}</span>
           <span data-testid="header-currency-field">BRL</span>
