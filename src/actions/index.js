@@ -37,3 +37,9 @@ export function newExpense(expense) {
     dispatch(addExpense(expense));
   };
 }
+
+// Deletar despesa
+export const removeExpense = (data) => ({
+  type: 'REMOVAL_EXPENSES',
+  payload: data,
+});
