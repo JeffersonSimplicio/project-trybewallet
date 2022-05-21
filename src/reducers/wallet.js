@@ -2,6 +2,7 @@
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
+  loading: true,
 };
 
 function wallet(state = INITIAL_STATE, action) {
@@ -10,6 +11,7 @@ function wallet(state = INITIAL_STATE, action) {
     return {
       ...state,
       currencies: action.payload,
+      loading: false,
     };
   case 'NEW_EXPENSE':
     return {

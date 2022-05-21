@@ -5,6 +5,7 @@ import { fetchCurrencies } from '../actions';
 import ExpenseForm from '../components/ExpenseForm';
 import sumExpenses from '../services/sumExpenses';
 import TableExpenses from '../components/TableExpenses';
+import Loading from '../components/Loading';
 
 class Wallet extends React.Component {
   componentDidMount() {
@@ -13,7 +14,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { emailUser, expenseList } = this.props;
+    const { emailUser, expenseList, loading } = this.props;
     const totalExpensesReal = sumExpenses(expenseList);
 
     return (
@@ -29,7 +30,9 @@ class Wallet extends React.Component {
           <span data-testid="total-field">{totalExpensesReal.toFixed(2)}</span>
           <span data-testid="header-currency-field">BRL</span>
         </header>
-        <ExpenseForm />
+        {loading
+          ? <Loading />
+          : <ExpenseForm />}
         <main>
           <TableExpenses />
         </main>
@@ -41,12 +44,14 @@ class Wallet extends React.Component {
 const mapStateToProps = (state) => ({
   emailUser: state.user.email,
   expenseList: state.wallet.expenses,
+  loading: state.wallet.loading,
 });
 
 Wallet.propTypes = {
   emailUser: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   expenseList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(Wallet);
