@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import getExtraData from '../services/getExtraData';
 import deleteExpense from '../services/deleteExpense';
-import { removeExpense } from '../actions';
+import { removeExpense, expenseEdit } from '../actions';
 
 class TableExpensesAuxiliary extends React.Component {
   constructor() {
     super();
     this.removeExpense = this.removeExpense.bind(this);
+    this.editingExpense = this.editingExpense.bind(this);
   }
 
   removeExpense({ target: { value: id } }) {
@@ -20,10 +21,18 @@ class TableExpensesAuxiliary extends React.Component {
     dispatch(removeExpense(newListExpense));
   }
 
+  editingExpense(expense) {
+    // console.log('Entrou na edição');
+    // console.log(expense);
+    const { dispatch } = this.props;
+    dispatch(expenseEdit(expense));
+  }
+
   render() {
     const { expenseData } = this.props;
     const valueNum = Number(expenseData.value);
     const extraData = getExtraData(expenseData);
+    // console.log(expenseData);
 
     return (
       <tr>
@@ -38,6 +47,8 @@ class TableExpensesAuxiliary extends React.Component {
         <td>
           <button
             type="button"
+            onClick={ () => this.editingExpense(expenseData) }
+            data-testid="edit-btn"
           >
             Editar
           </button>

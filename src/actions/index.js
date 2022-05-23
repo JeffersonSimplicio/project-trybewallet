@@ -43,3 +43,14 @@ export const removeExpense = (deletedExpense) => ({
   type: 'REMOVAL_EXPENSES',
   payload: deletedExpense,
 });
+
+// Edição de despesa
+export const expenseEdit = (editingExpense) => ({
+  type: 'EDITING_EXPENSE',
+  payload: editingExpense,
+});
+
+export const finishedEdit = (newExpenseList) => ({
+  type: 'FINISHED_EDIT',
+  payload: newExpenseList,
+});

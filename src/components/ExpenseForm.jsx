@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { newExpense } from '../actions';
+import { newExpense, finishedEdit } from '../actions';
+import newExpenseInfo from '../services/newExpenseInfo';
+import newExpenseList from '../services/newExpenseList';
 
 class ExpenseForm extends React.Component {
   constructor() {
     super();
     this.getValue = this.getValue.bind(this);
     this.attachExpense = this.attachExpense.bind(this);
+    this.editAttach = this.editAttach.bind(this);
     this.state = {
       value: '',
       description: '',
@@ -55,6 +58,23 @@ class ExpenseForm extends React.Component {
     dispatch(newExpense(expense));
   }
 
+  editAttach() {
+    const { dispatch, editExpense, preEdition } = this.props;
+    // console.log('O que vai ser editado editExpense', editExpense);
+    const editedExpense = newExpenseInfo(this.state, editExpense);
+    // console.log(editedExpense);
+    const newList = newExpenseList(preEdition, editedExpense);
+    // console.log(newList);
+    this.setState({
+      value: '',
+      description: '',
+      selectCurrency: '',
+      paymentMethod: '',
+      category: '',
+    });
+    dispatch(finishedEdit(newList));
+  }
+
   render() {
     const {
       value,
@@ -64,7 +84,7 @@ class ExpenseForm extends React.Component {
       category,
     } = this.state;
 
-    const { currencies } = this.props;
+    const { currencies, editStatus } = this.props;
 
     const paymentMethods = [
       'Dinheiro',
@@ -115,6 +135,7 @@ class ExpenseForm extends React.Component {
             id="currency-input"
             value={ selectCurrency }
             onChange={ this.getValue }
+            data-testid="currency-input"
           >
             {currencies.map((currency, index) => (
               <option key={ index } value={ currency }>{ currency }</option>
@@ -152,12 +173,23 @@ class ExpenseForm extends React.Component {
           </select>
         </label>
 
-        <button
-          type="button"
-          onClick={ this.attachExpense }
-        >
-          Adicionar despesa
-        </button>
+        {editStatus
+          ? (
+            <button
+              type="button"
+              onClick={ this.editAttach }
+            >
+              Editar despesa
+            </button>
+          )
+          : (
+            <button
+              type="button"
+              onClick={ this.attachExpense }
+            >
+              Adicionar despesa
+            </button>
+          )}
       </form>
     );
   }
@@ -166,12 +198,20 @@ class ExpenseForm extends React.Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   numberId: state.wallet.expenses.length,
+  editStatus: state.wallet.editing?.situation,
+  editExpense: state.wallet.editing?.expense,
+  preEdition: state.wallet.expenses,
 });
+// A interrogação verifica se existe ou não, caso exite a busca é feita
+// Uma especie de if
 
 ExpenseForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
   numberId: PropTypes.number.isRequired,
+  editStatus: PropTypes.bool.isRequired,
+  editExpense: PropTypes.arrayOf(PropTypes.any).isRequired,
+  preEdition: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps)(ExpenseForm);

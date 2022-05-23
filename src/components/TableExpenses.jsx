@@ -7,7 +7,7 @@ import TableExpensesAuxiliary from './TableExpensesAuxiliary';
 class TableExpenses extends React.Component {
   render() {
     const { expenseList } = this.props;
-    // console.log(expenseList);
+    // console.log('render', expenseList);
     return (
       <table>
         <thead>
