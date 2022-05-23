@@ -7,9 +7,9 @@ const addUser = (userEmail) => ({
 export default addUser;
 
 // Moedas disponiveis
-const addCurrencies = (data) => ({
+const addCurrencies = (currencies) => ({
   type: 'CURRENCIES',
-  payload: data,
+  payload: currencies,
 });
 
 export function fetchCurrencies() {
@@ -39,7 +39,7 @@ export function newExpense(expense) {
 }
 
 // Deletar despesa
-export const removeExpense = (data) => ({
+export const removeExpense = (deletedExpense) => ({
   type: 'REMOVAL_EXPENSES',
-  payload: data,
+  payload: deletedExpense,
 });
